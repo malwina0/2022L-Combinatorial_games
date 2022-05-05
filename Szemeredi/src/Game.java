@@ -24,18 +24,35 @@ public class Game {
     public static Game DataInput(){
         System.out.println("Gra Szemeredi'ego");
 
-        System.out.println("Ze względu na dużą złożoność obliczeniowią aplikacji, milej widziane są mniejsze wielkości zbioru.");
+        System.out.println("Ze względu na dużą złożoność obliczeniowią aplikacji, mile widziane są mniejsze wielkości zbioru.");
 
         System.out.println("Podaj wielkość wylosowanego zbioru:");
-        int n = Input.nextInt();
-        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego:");
+        int n = 0;
+        while(true) {
+            String nS = Input.nextLine();
+            try {
+                n = Integer.parseInt(nS);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 3 do 100.");
+            }
+        }
+
+        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego (od 1 do " + n/2 +"):");
         int k;
+        while(true) {
+            String kS = Input.nextLine();
+            try {
+                k = Integer.parseInt(kS);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 1 do " + n/2 +":");
+            }
+        }
         while(true){
-            k = Input.nextInt();
             if (k <= n/2) {
                 break;
-            }
-            else {
+            } else {
                 System.out.println("Ciąg powinien być długości mniejszej niż połowa wielkości zbioru! Podaj jeszcze raz:");
             }
         }
@@ -79,8 +96,16 @@ public class Game {
         System.out.println(PlayerSet);
         System.out.println("Wybierz liczbę ze zbioru, którą chcesz pokolorwać swoim kolorem");
         int element;
+        while(true) {
+            String kS = Input.nextLine();
+            try {
+                element = Integer.parseInt(kS);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę znajdującą się w zbiorze:");
+            }
+        }
         while(true){
-            element = Input.nextInt();
             if (Set.contains(element)){
                 PlayerSet.add(element);
                 Set.removeAll(Arrays.asList(element));
@@ -105,9 +130,7 @@ public class Game {
         int lenC = ProgressionChecker.CheckProgressions(SetC).keySet().iterator().next();
         int lenP = ProgressionChecker.CheckProgressions(SetP).keySet().iterator().next();
         boolean remis = false;
-        if (lenC < k)
-            remis = true;
-        if (lenP < k)
+        if (lenC < k && lenP < k)
             remis = true;
         return remis;
     }

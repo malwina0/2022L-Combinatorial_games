@@ -4,7 +4,7 @@ import java.util.*;
 public class SetSampling {
 
     public static List<Integer> ChooseRandomSet(int n) {
-        int bound = n*3;
+        int bound = n*5;
         List<Integer> numbers = new ArrayList<>();
         Random rand = new Random();
         boolean repeat = false;
