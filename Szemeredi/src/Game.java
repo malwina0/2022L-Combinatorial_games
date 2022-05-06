@@ -23,9 +23,8 @@ public class Game {
 
     public static Game DataInput(){
         System.out.println("Gra Szemeredi'ego");
-
-        System.out.println("Ze względu na dużą złożoność obliczeniowią aplikacji, mile widziane są mniejsze wielkości zbioru.");
-
+        System.out.println("Ze względu na trudność w szukaniu długich ciągów pośród wielu liczb oraz przedłużone działanie programu," +
+                "najlepiej wybrać n z przedziału od 3 do 1000 oraz k od 1 do 10.");
         System.out.println("Podaj wielkość wylosowanego zbioru:");
         int n = 0;
         while(true) {
@@ -34,11 +33,23 @@ public class Game {
                 n = Integer.parseInt(nS);
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 3 do 100.");
+                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 3 do 1000.");
+            }
+        }
+        while(true){
+            if (n >= 1){
+                break;
+            } else {
+                System.out.println("Liczba musi być większa od 0. Podaj liczbę liczbę od 1 do 1000");
+            }
+            if (n <= 2000) {
+                break;
+            } else {
+                System.out.println("Podana liczba jest zbyt duża. Podaj jeszcze raz:");
             }
         }
 
-        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego (od 1 do " + n/2 +"):");
+        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego (najlepiej od 2 do 10):");
         int k;
         while(true) {
             String kS = Input.nextLine();
@@ -54,6 +65,11 @@ public class Game {
                 break;
             } else {
                 System.out.println("Ciąg powinien być długości mniejszej niż połowa wielkości zbioru! Podaj jeszcze raz:");
+            }
+            if (k >= 1){
+                break;
+            } else {
+                System.out.println("Liczba musi być większa od 0. Podaj liczbę liczbę od 1 do \" + n/2 +\":\"");
             }
         }
         int order = new Random().nextInt(2);

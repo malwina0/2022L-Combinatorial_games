@@ -4,7 +4,7 @@ import java.util.*;
 public class SetSampling {
 
     public static List<Integer> ChooseRandomSet(int n) {
-        int bound = n*2;
+        int bound = n*5;
         List<Integer> numbers = new ArrayList<>();
         Random rand = new Random();
         boolean repeat = false;
@@ -28,8 +28,8 @@ public class SetSampling {
         List<Integer> numbers = new ArrayList<>();
         while (true) {
             List<Integer> test = ChooseRandomSet(n);
-            int length = ProgressionChecker.CheckProgressions(test).keySet().iterator().next();
-            if (length >= k) {
+            int length = Malwina.getSequences(test, k).size();
+            if (length >= 1) {
                 numbers = test;
                 break;
             }
