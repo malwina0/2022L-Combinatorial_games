@@ -34,8 +34,6 @@ public class Malwina{
                 map.put(difference, listWithThisDifference);
             }
         }
-        //System.out.println("Przed usuwaniem: " + map);
-
         //jesli jest mniej niż k liczb z dana różnicą, czyli mniej niż k-1 par to nie ma sensu ich rozważać:
         Set<Integer> set = new HashSet<> ();
         for (int i = 0; i < howManyAbs.size(); i++) {
@@ -44,8 +42,6 @@ public class Malwina{
             }
         }
         map.keySet().removeAll(set);
-        //System.out.println("przed: ");
-        //System.out.println(map);
 
         // dla konkretnej różnicy n, sortujemy listę par po pierwszym elemencie
         List<ArrayList<Integer>> currentList = null;
@@ -57,18 +53,13 @@ public class Malwina{
                 int iledalej = 1;
                 // sprawdza czy jak jest np lista [[1, 2], [2, 3], [4, 5], [7,8]] to czy 2==2, 3==4, 5==7:
                 while (currentList.get(j).get(noOfElem) >= currentList.get(j+iledalej).get(0)){
-                    //System.out.println(currentList.get(j).get(noOfElem) + " ile dalej: " + iledalej + "    " + currentList.get(j+iledalej).get(0));
                     if (currentList.get(j).get(noOfElem).equals(currentList.get(j+iledalej).get(0))){
                         currentList.get(j).add(currentList.get(j+iledalej).get(1));
                         noOfElem += 1;
-                        //currentList.remove(j+iledalej);
-                        //System.out.println("Dodano do listy, teraz: " + currentList);
                         iledalej = 1;
                     } else {
                         iledalej +=1;
                     }
-                    //System.out.println("NoofElem = " + noOfElem);
-                    //System.out.println(" k= " + k);
                     if (j+iledalej >= currentList.size() || noOfElem >= k-1){
                         //przerywa jak już stworzono ciąg długości k, żeby nie szukało dłuższego, albo jak elementy się kończą
                         break;
@@ -76,18 +67,8 @@ public class Malwina{
 
                 }
             }
-// TO TWORZY MAPĘ: różnica : ciągi o tej różnicy
-//            for (int j = 0; j < currentList.size(); j++) {
-//                while (currentList.get(j).size() < k) {
-//                    currentList.remove(j);
-//                    if (j + 1 > currentList.size()) {
-//                        break;
-//                    }
-//                }
-//            }
-// TO TWORZY LISTĘ CIĄGÓW:
             for (ArrayList<Integer> integers : currentList) {
-                if (integers.size() >= k) {
+                if (integers.size() >= k) { //do wynikowego setu dodaje tylko te listy, które są długości k (wcześniej apewniliśmy długość <=k)
                     sequences.add(integers);
                 }
             }
@@ -96,7 +77,7 @@ public class Malwina{
     }
 
 
-    public static Integer selectFirstNumber(List<ArrayList<Integer>> sequences) {
+    public static Integer selectFirstNumber(Set<ArrayList<Integer>> sequences) {
         /**
          * przyjmuje listę ciągów arytmetycznych
          * zwraca liczbę którą pokoloruje komputer, w przypadku gdy jest to jego pierwszy ruch
@@ -114,7 +95,6 @@ public class Malwina{
                 .stream()
                 .max((o1, o2) -> o1.getValue().compareTo(o2.getValue()))
                 .get();
-
 
         if (mostFrequentNo.getValue() == 1) { //jeśli żadna liczba nie występuje więcej niż 1 raz
             List<Integer> list = sequences.stream().max(Comparator.comparing(List::size)).get();
