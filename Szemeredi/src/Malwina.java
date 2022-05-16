@@ -23,6 +23,8 @@ public class Malwina{
                 howManyAbs.set(difference, howManyAbs.get(difference)+1);
                 List<ArrayList<Integer>> listWithThisDifference;
                 ArrayList<Integer> par = new ArrayList<>();
+                int xi = numbers.get(i);
+                int xj = numbers.get(j);
                 par.add(numbers.get(i));
                 par.add(numbers.get(j)); //mamy listę z parą którą rozważamy
                 if (map.containsKey(difference)) {
