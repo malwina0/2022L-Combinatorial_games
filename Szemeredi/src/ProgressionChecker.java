@@ -5,9 +5,6 @@ public class ProgressionChecker {
 
 
     public static Map<Integer, List<Integer>> CheckProgressions(List<Integer> numbers) {
-        /**
-         * Funkcja szuka najdłuższego ciągu i zwraca słownik postaci {klucz: długość, wartość: najdłuższy ciąg}
-         */
         // korzystając trochę z tego napisałam getSequences i selectFirstNumber, ale może to się jakoś przyda
         int maxlength = Math.min(1,numbers.size());
         List<Integer> series = new ArrayList<>();

@@ -11,15 +11,19 @@ public class Game {
     public static final Scanner Input = new Scanner( System.in );
     public Set<ArrayList<Integer>> sequences;
     public int blockOpponent(){
-        System.out.println("BLOCK");
+        //System.out.println("BLOCK");
         List<Integer> copy = new ArrayList<>();
-        copy.addAll(PlayerSet);
+        List<Integer> seriesPlayer = setsUpdate(copy, PlayerSet);
+        seriesPlayer.removeAll(PlayerSet);
+        return seriesPlayer.get(0);
+    }
+
+    private List<Integer> setsUpdate(List<Integer> copy, ArrayList<Integer> playerSet) {
+        copy.addAll(playerSet);
         copy.addAll(Set);
         Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
         int key = best.keySet().iterator().next();
-        List <Integer> series = best.get(key);
-        series.removeAll(PlayerSet);
-        return series.get(0);
+        return best.get(key);
     }
 
     public Game(int order, int n, int k) {
@@ -37,7 +41,7 @@ public class Game {
         System.out.println("Ze względu na trudność w szukaniu długich ciągów pośród wielu liczb oraz przedłużone działanie programu," +
                 "najlepiej wybrać n z przedziału od 3 do 1000 oraz k od 1 do 10.");
         System.out.println("Podaj wielkość wylosowanego zbioru:");
-        int n = 0;
+        int n;
         while(true) {
             String nS = Input.nextLine();
             try {
@@ -63,8 +67,7 @@ public class Game {
             }
         }
         int order = new Random().nextInt(2);
-        Game game = new Game(order, n, k);
-        return game;
+        return new Game(order, n, k);
     }
     public int computerFirstMove(){
         System.out.println("Ruch komputera.");
@@ -79,38 +82,38 @@ public class Game {
         System.out.println("Komputer wybrał element " + element);
         System.out.println("Zbiór komputera:");
         System.out.println(ComputerSet);
-        int length = ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next();
-        System.out.println(length);
-        return length;
+        //System.out.println(length);
+        return ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next();
     }
 
-    public int ComputerMove() throws Exception {
+    public int ComputerMove(){
         System.out.println("Ruch komputera.");
         List<Integer> copy = new ArrayList<>();
-        boolean result;
-        int element;
-        if (PlayerSet.size() == k - 1) {
-            element = blockOpponent();
-            Set.removeAll(List.of(element));
-        } else {
-            copy.addAll(ComputerSet);
-            copy.addAll(Set);
-            Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
-            int key = best.keySet().iterator().next();
-            List<Integer> series = best.get(key);
-            System.out.println(series.toString());
+        boolean result = false;
+        int element = -1;
+
+        if (ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next() == k - 1) {
+            List<Integer> copy2 = new ArrayList<>();
+            List<Integer> series = setsUpdate(copy2,PlayerSet);
+            series.removeAll(PlayerSet);
+            if(series.size() == 1) {
+                element = blockOpponent();
+                Set.removeAll(List.of(element));
+                result = true;
+            }
+        } if(!result) {
+            List<Integer> series = setsUpdate(copy, ComputerSet);
+            //System.out.println(series.toString());
             if (series.isEmpty())
                 return 0;
             int index;
             while (true) {
-                if (!series.isEmpty()) {
-                    index = new Random().nextInt(series.size());
-                    if (Set.contains(series.get(index))) {
-                        element = series.get(index);
-                        Set.removeAll(Arrays.asList(element));
-                        break;
-                    }
-                } else throw new Exception();
+                index = new Random().nextInt(series.size());
+                if (Set.contains(series.get(index))) {
+                    element = series.get(index);
+                    Set.removeAll(List.of(element));
+                    break;
+                }
             }
         }
         return finalizeMove(element);
@@ -129,7 +132,7 @@ public class Game {
                 element = Integer.parseInt(kS);
                 if (Set.contains(element)){
                     PlayerSet.add(element);
-                    Set.removeAll(Arrays.asList(element));
+                    Set.removeAll(List.of(element));
                     break;
                 } else {
                     throw new NumberFormatException();
@@ -150,13 +153,10 @@ public class Game {
         List<Integer> SetP = new ArrayList<>();
         SetP.addAll(PlayerSet);
         SetP.addAll(Set);
-        System.out.println(SetC);
+        //System.out.println(SetC);
         int lenC = ProgressionChecker.CheckProgressions(SetC).keySet().iterator().next();
         int lenP = ProgressionChecker.CheckProgressions(SetP).keySet().iterator().next();
-        boolean remis = false;
-        if (lenC < k && lenP < k)
-            remis = true;
-        return remis;
+        return lenC < k && lenP < k;
     }
 
 

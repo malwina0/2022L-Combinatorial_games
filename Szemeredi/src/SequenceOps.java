@@ -106,15 +106,15 @@ public class SequenceOps {
         }
     }
     public static void updateSequences(Set<ArrayList<Integer>> sequences, int element){
-        System.out.println("---------------UPDATE SEQUENCES-----------------");
-        System.out.println(sequences);
+        //System.out.println("---------------UPDATE SEQUENCES-----------------");
+        //System.out.println(sequences);
         Iterator<ArrayList<Integer>> sequenceIterator = sequences.iterator();
         List<Integer> currentSequence;
         while (sequenceIterator.hasNext()){
             currentSequence = sequenceIterator.next();
             currentSequence.removeAll(List.of(element));
         }
-        System.out.println(sequences);
+        //System.out.println(sequences);
     }
 
 
