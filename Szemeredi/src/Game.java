@@ -38,27 +38,17 @@ public class Game {
                 System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 3 do 1000.");
             }
         }
-        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego (najlepiej od 2 do 10):");
+        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego (od 2 do 10):");
         int k;
         while(true) {
             String kS = Input.nextLine();
             try {
                 k = Integer.parseInt(kS);
+                if (k > n/2 || k < 2)
+                    throw new NumberFormatException();
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 1 do " + n/2 +":");
-            }
-        }
-        while(true){
-            if (k <= n/2) {
-                break;
-            } else {
-                System.out.println("Ciąg powinien być długości mniejszej niż połowa wielkości zbioru! Podaj jeszcze raz:");
-            }
-            if (k >= 1){
-                break;
-            } else {
-                System.out.println("Liczba musi być większa od 0. Podaj liczbę liczbę od 1 do \" + n/2 +\":\"");
+                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od " + Math.min(2,n/2) + " do " + n/2 +":");
             }
         }
         int order = new Random().nextInt(2);
@@ -70,12 +60,15 @@ public class Game {
     public int ComputerMove() throws Exception {
         System.out.println("Ruch komputera.");
         List<Integer> copy = new ArrayList<>();
+        boolean result;
         copy.addAll(ComputerSet);
         copy.addAll(Set);
         Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
         int key = best.keySet().iterator().next();
         List<Integer> series = best.get(key);
         System.out.println(series.toString());
+        if (series.isEmpty())
+            return 0;
         int index;
         int element;
         while(true) {
@@ -94,6 +87,7 @@ public class Game {
         System.out.println(ComputerSet);
 
         int length = ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next();
+        System.out.println(length);
         return length;
 
     }
@@ -133,8 +127,9 @@ public class Game {
         SetC.addAll(ComputerSet);
         SetC.addAll(Set);
         List<Integer> SetP = new ArrayList<>();
-        SetC.addAll(PlayerSet);
-        SetC.addAll(Set);
+        SetP.addAll(PlayerSet);
+        SetP.addAll(Set);
+        System.out.println(SetC);
         int lenC = ProgressionChecker.CheckProgressions(SetC).keySet().iterator().next();
         int lenP = ProgressionChecker.CheckProgressions(SetP).keySet().iterator().next();
         boolean remis = false;

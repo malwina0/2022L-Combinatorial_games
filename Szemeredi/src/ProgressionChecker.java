@@ -21,6 +21,7 @@ public class ProgressionChecker {
                 int roznica = numbers.get(j) - numbers.get(i);
                 while(numbers.contains(next + roznica)) {
                     next = next + roznica;
+                    //System.out.println(next);
                     singleProgression.add(next);
                 }
                 if (singleProgression.size() > maxlength) {
