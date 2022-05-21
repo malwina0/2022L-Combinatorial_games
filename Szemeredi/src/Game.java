@@ -102,24 +102,20 @@ public class Game {
             String kS = Input.nextLine();
             try {
                 element = Integer.parseInt(kS);
-                break;
+                if (Set.contains(element)){
+                    PlayerSet.add(element);
+                    Set.removeAll(Arrays.asList(element));
+                    break;
+                } else {
+                    throw new NumberFormatException();
+                }
             } catch (NumberFormatException e) {
-                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę znajdującą się w zbiorze:");
-            }
-        }
-        while(true){
-            if (Set.contains(element)){
-                PlayerSet.add(element);
-                Set.removeAll(Arrays.asList(element));
-                break;
-            } else {
-                System.out.println("Brak elementu w zbiorze. Wybierz jeszcze raz.");
+                System.out.println("Podano nieprawidłowy format danych lub liczbę, której nie ma w zbiorze, proszę podać liczbę znajdującą się w zbiorze:");
             }
         }
         System.out.println("Zbiór gracza:");
         System.out.println(PlayerSet);
-        int length = ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next();
-        return length;
+        return ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next();
     }
 
     public boolean checkRemis(){

@@ -9,7 +9,7 @@ public class ProgressionChecker {
          * Funkcja szuka najdłuższego ciągu i zwraca słownik postaci {klucz: długość, wartość: najdłuższy ciąg}
          */
         // korzystając trochę z tego napisałam getSequences i selectFirstNumber, ale może to się jakoś przyda
-        int maxlength = 2;
+        int maxlength = Math.min(1,numbers.size());
         List<Integer> series = new ArrayList<>();
         for (int i = 0; i < numbers.size(); i++ ){
             for (int j = i+1; j < numbers.size(); j++){
