@@ -7,7 +7,4 @@ public class MySet {
     public boolean blockOpponent(){
         return coloured.size() < colouredPlayer.size();
     }
-    public boolean blockOpponentNow(){
-        return coloured.size() == lenSet - 1;
-    }
 }

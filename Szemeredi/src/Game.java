@@ -10,7 +10,17 @@ public class Game {
     public ArrayList<Integer> PlayerSet;
     public int Order;
     public static final Scanner Input = new Scanner( System.in );
-
+    public int blockOpponent(){
+        System.out.println("BLOCK");
+        List<Integer> copy = new ArrayList<>();
+        copy.addAll(PlayerSet);
+        copy.addAll(Set);
+        Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
+        int key = best.keySet().iterator().next();
+        List <Integer> series = best.get(key);
+        series.removeAll(PlayerSet);
+        return series.get(0);
+    }
 
     public Game(int order, int n, int k) {
         this.k = k;
@@ -38,7 +48,7 @@ public class Game {
                 System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 3 do 1000.");
             }
         }
-        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego (od 2 do 10):");
+        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego od " + Math.min(2,n/2) + " do " + n/2 +":");
         int k;
         while(true) {
             String kS = Input.nextLine();
@@ -61,25 +71,30 @@ public class Game {
         System.out.println("Ruch komputera.");
         List<Integer> copy = new ArrayList<>();
         boolean result;
-        copy.addAll(ComputerSet);
-        copy.addAll(Set);
-        Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
-        int key = best.keySet().iterator().next();
-        List<Integer> series = best.get(key);
-        System.out.println(series.toString());
-        if (series.isEmpty())
-            return 0;
-        int index;
         int element;
-        while(true) {
-            if (!series.isEmpty()) {
-                index = new Random().nextInt(series.size());
-                if (Set.contains(series.get(index))) {
-                    element = series.get(index);
-                    Set.removeAll(Arrays.asList(element));
-                    break;
-                }
-            } else throw new Exception();
+        if (PlayerSet.size() == k - 1) {
+            element = blockOpponent();
+            Set.removeAll(List.of(element));
+        } else {
+            copy.addAll(ComputerSet);
+            copy.addAll(Set);
+            Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
+            int key = best.keySet().iterator().next();
+            List<Integer> series = best.get(key);
+            System.out.println(series.toString());
+            if (series.isEmpty())
+                return 0;
+            int index;
+            while (true) {
+                if (!series.isEmpty()) {
+                    index = new Random().nextInt(series.size());
+                    if (Set.contains(series.get(index))) {
+                        element = series.get(index);
+                        Set.removeAll(Arrays.asList(element));
+                        break;
+                    }
+                } else throw new Exception();
+            }
         }
         ComputerSet.add(element);
         System.out.println("Komputer wybrał element " + element);
@@ -96,7 +111,7 @@ public class Game {
         System.out.println("Ruch gracza.");
         System.out.println("Twój zbiór:");
         System.out.println(PlayerSet);
-        System.out.println("Wybierz liczbę ze zbioru, którą chcesz pokolorwać swoim kolorem");
+        System.out.println("Wybierz liczbę ze zbioru, którą chcesz pokolorować swoim kolorem");
         int element;
         while(true) {
             String kS = Input.nextLine();

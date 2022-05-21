@@ -28,6 +28,7 @@ public class Main {
             if(game.checkRemis()) {
                 System.out.println("REMIS!");
                 System.out.println("Żaden z zawodników nie ułoży już ciągu");
+                return;
             }
         }
     }
