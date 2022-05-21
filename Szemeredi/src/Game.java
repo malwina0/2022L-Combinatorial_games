@@ -81,7 +81,7 @@ public class Game {
         ComputerSet.add(element);
         System.out.println("Komputer wybrał element " + element);
         System.out.println("Zbiór komputera:");
-        System.out.println(ComputerSet);
+        System.out.println(Main.ANSI_RED + ComputerSet + Main.ANSI_RESET);
         //System.out.println(length);
         return ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next();
     }
@@ -129,7 +129,7 @@ public class Game {
     public int PlayerMove(){
         System.out.println("Ruch gracza.");
         System.out.println("Twój zbiór:");
-        System.out.println(PlayerSet);
+        System.out.println(Main.ANSI_GREEN + PlayerSet + Main.ANSI_RESET);
         System.out.println("Wybierz liczbę ze zbioru, którą chcesz pokolorować swoim kolorem");
         int element;
         while(true) {
@@ -147,8 +147,8 @@ public class Game {
                 System.out.println("Podano nieprawidłowy format danych lub liczbę, której nie ma w zbiorze, proszę podać liczbę znajdującą się w zbiorze:");
             }
         }
-        System.out.println("Zbiór gracza:");
-        System.out.println(PlayerSet);
+        System.out.println("Twój zbiór:");
+        System.out.println(Main.ANSI_GREEN + PlayerSet + Main.ANSI_RESET);
         return ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next();
     }
 
