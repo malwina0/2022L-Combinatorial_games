@@ -31,24 +31,13 @@ public class Game {
             String nS = Input.nextLine();
             try {
                 n = Integer.parseInt(nS);
+                if (n > 1000 || n < 3)
+                    throw new NumberFormatException();
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 3 do 1000.");
             }
         }
-        while(true){
-            if (n >= 1){
-                break;
-            } else {
-                System.out.println("Liczba musi być większa od 0. Podaj liczbę liczbę od 1 do 1000");
-            }
-            if (n <= 2000) {
-                break;
-            } else {
-                System.out.println("Podana liczba jest zbyt duża. Podaj jeszcze raz:");
-            }
-        }
-
         System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego (najlepiej od 2 do 10):");
         int k;
         while(true) {
@@ -78,7 +67,7 @@ public class Game {
     }
 
 
-    public int ComputerMove(){
+    public int ComputerMove() throws Exception {
         System.out.println("Ruch komputera.");
         List<Integer> copy = new ArrayList<>();
         copy.addAll(ComputerSet);
@@ -86,15 +75,18 @@ public class Game {
         Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
         int key = best.keySet().iterator().next();
         List<Integer> series = best.get(key);
+        System.out.println(series.toString());
         int index;
         int element;
         while(true) {
-            index = new Random().nextInt(series.size());
-            if (Set.contains(series.get(index))) {
-                element = series.get(index);
-                Set.removeAll(Arrays.asList(element));
-                break;
-            }
+            if (!series.isEmpty()) {
+                index = new Random().nextInt(series.size());
+                if (Set.contains(series.get(index))) {
+                    element = series.get(index);
+                    Set.removeAll(Arrays.asList(element));
+                    break;
+                }
+            } else throw new Exception();
         }
         ComputerSet.add(element);
         System.out.println("Komputer wybrał element " + element);
