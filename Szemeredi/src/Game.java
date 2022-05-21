@@ -91,18 +91,24 @@ public class Game {
         List<Integer> copy = new ArrayList<>();
         boolean result = false;
         int element = -1;
-
+        List<Integer> series = setsUpdate(copy, ComputerSet);
         if (ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next() == k - 1) {
             List<Integer> copy2 = new ArrayList<>();
-            List<Integer> series = setsUpdate(copy2,PlayerSet);
-            series.removeAll(PlayerSet);
-            if(series.size() == 1) {
+            List<Integer> series2 = setsUpdate(copy2,PlayerSet);
+            series2.removeAll(PlayerSet);
+            List<Integer> seriesCopy = new ArrayList<>(series);
+            seriesCopy.removeAll(ComputerSet);
+            if(series2.size() == 1 && seriesCopy.size() > 1) {
                 element = blockOpponent();
+                Set.removeAll(List.of(element));
+                result = true;
+            } else if (seriesCopy.size() == 1){
+                element = seriesCopy.get(0);
                 Set.removeAll(List.of(element));
                 result = true;
             }
         } if(!result) {
-            List<Integer> series = setsUpdate(copy, ComputerSet);
+
             //System.out.println(series.toString());
             if (series.isEmpty())
                 return 0;
