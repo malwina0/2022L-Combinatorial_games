@@ -53,7 +53,8 @@ public class Malwina{
                 int iledalej = 1;
                 // sprawdza czy jak jest np lista [[1, 2], [2, 3], [4, 5], [7,8]] to czy 2==2, 3==4, 5==7:
                 while (currentList.get(j).get(noOfElem) >= currentList.get(j+iledalej).get(0)){
-                    if (currentList.get(j).get(noOfElem).equals(currentList.get(j+iledalej).get(0))){
+                    if (currentList.get(j).get(noOfElem).equals(currentList.get(j+iledalej).get(0)) && currentList.get(j).size()+1 <= k){
+                        // && currentList.get(j).size()+1 <= k
                         currentList.get(j).add(currentList.get(j+iledalej).get(1));
                         noOfElem += 1;
                         iledalej = 1;
@@ -64,7 +65,6 @@ public class Malwina{
                         //przerywa jak już stworzono ciąg długości k, żeby nie szukało dłuższego, albo jak elementy się kończą
                         break;
                     }
-
                 }
             }
             for (ArrayList<Integer> integers : currentList) {
