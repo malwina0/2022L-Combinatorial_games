@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Malwina{
+public class SequenceOps {
 
     public static Set<ArrayList<Integer>> getSequences(List<Integer> numbers, int k) {
         /**
@@ -104,6 +104,17 @@ public class Malwina{
         } else {
             return mostFrequentNo.getKey(); //jak jakaś liczba występuje więcej niż raz to ją wybieramy i tyle
         }
+    }
+    public static void updateSequences(Set<ArrayList<Integer>> sequences, int element){
+        System.out.println("---------------UPDATE SEQUENCES-----------------");
+        System.out.println(sequences);
+        Iterator<ArrayList<Integer>> sequenceIterator = sequences.iterator();
+        List<Integer> currentSequence;
+        while (sequenceIterator.hasNext()){
+            currentSequence = sequenceIterator.next();
+            currentSequence.removeAll(List.of(element));
+        }
+        System.out.println(sequences);
     }
 
 

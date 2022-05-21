@@ -1,4 +1,3 @@
-import javax.swing.plaf.basic.BasicMenuUI;
 import java.util.*;
 
 public class SetSampling {
@@ -28,7 +27,7 @@ public class SetSampling {
         List<Integer> numbers = new ArrayList<>();
         while (true) {
             List<Integer> test = ChooseRandomSet(n);
-            int length = Malwina.getSequences(test, k).size();
+            int length = SequenceOps.getSequences(test, k).size();
             if (length >= 1) {
                 numbers = test;
                 break;

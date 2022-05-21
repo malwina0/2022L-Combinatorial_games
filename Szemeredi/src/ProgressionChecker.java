@@ -18,7 +18,7 @@ public class ProgressionChecker {
                 int next = numbers.get(j);
                 singleProgression.add(first);
                 singleProgression.add(next);
-                int roznica = numbers.get(j) - numbers.get(i);
+                int roznica = Math.abs(numbers.get(j) - numbers.get(i));
                 while(numbers.contains(next + roznica)) {
                     next = next + roznica;
                     //System.out.println(next);

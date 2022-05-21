@@ -7,11 +7,11 @@ public class Test2 {
         int k = 3;
         System.out.println("----------------------------------");
         List<Integer> numbers = SetSampling.GenerateSetWithProgression(n,k);
-        Set<ArrayList<Integer>> sequences = Malwina.getSequences(numbers, k);
+        Set<ArrayList<Integer>> sequences = SequenceOps.getSequences(numbers, k);
         System.out.println(numbers);
         System.out.println("Sequences:");
         System.out.println(sequences);
-        System.out.println("Pierwsza liczba wybrana przez komputer: " + Malwina.selectFirstNumber(sequences));
+        System.out.println("Pierwsza liczba wybrana przez komputer: " + SequenceOps.selectFirstNumber(sequences));
         List<ArrayList<Integer>> nnbg = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> person = new ArrayList<>();
         person.add(2);
@@ -19,7 +19,7 @@ public class Test2 {
         person.add(4);
         System.out.println("TEST");
         System.out.println(person);
-        Set<ArrayList<Integer>> sequences2 = Malwina.getSequences(person, 2);
+        Set<ArrayList<Integer>> sequences2 = SequenceOps.getSequences(person, 2);
         System.out.println(sequences2);
         nnbg.add(person);
         ArrayList<Integer> person2 = new ArrayList<>();

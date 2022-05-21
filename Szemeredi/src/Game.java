@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.*;
 
 public class Game {
@@ -10,6 +9,7 @@ public class Game {
     public ArrayList<Integer> PlayerSet;
     public int Order;
     public static final Scanner Input = new Scanner( System.in );
+    public Set<ArrayList<Integer>> sequences;
     public int blockOpponent(){
         System.out.println("BLOCK");
         List<Integer> copy = new ArrayList<>();
@@ -29,6 +29,7 @@ public class Game {
         ComputerSet = new ArrayList<>();
         PlayerSet = new ArrayList<>();
         Set = (ArrayList<Integer>) SetSampling.GenerateSetWithProgression(n, k);
+        sequences = SequenceOps.getSequences(Set,k);
     }
 
     public static Game DataInput(){
@@ -65,7 +66,23 @@ public class Game {
         Game game = new Game(order, n, k);
         return game;
     }
+    public int computerFirstMove(){
+        System.out.println("Ruch komputera.");
+        int element = SequenceOps.selectFirstNumber(sequences);
+        Set.removeAll(List.of(element));
+        SequenceOps.updateSequences(sequences, element);
+        return finalizeMove(element);
+    }
 
+    private int finalizeMove(int element) {
+        ComputerSet.add(element);
+        System.out.println("Komputer wybrał element " + element);
+        System.out.println("Zbiór komputera:");
+        System.out.println(ComputerSet);
+        int length = ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next();
+        System.out.println(length);
+        return length;
+    }
 
     public int ComputerMove() throws Exception {
         System.out.println("Ruch komputera.");
@@ -96,14 +113,7 @@ public class Game {
                 } else throw new Exception();
             }
         }
-        ComputerSet.add(element);
-        System.out.println("Komputer wybrał element " + element);
-        System.out.println("Zbiór komputera:");
-        System.out.println(ComputerSet);
-
-        int length = ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next();
-        System.out.println(length);
-        return length;
+        return finalizeMove(element);
 
     }
 
