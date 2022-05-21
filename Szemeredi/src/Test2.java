@@ -3,13 +3,15 @@ import java.util.*;
 public class Test2 {
     public static void main(String[] args) {
         //a tu sobie tylko testuje czy to co robie ma sens
-        int n= 40;
-        int k = 3;
+        int n= 50;
+        int k = 4;
+        System.out.println("----------------------------------");
         List<Integer> numbers = SetSampling.GenerateSetWithProgression(n,k);
-        List<ArrayList<Integer>> sequences = Malwina.getSequences(numbers, k);
+        Set<ArrayList<Integer>> sequences = Malwina.getSequences(numbers, k);
         System.out.println(numbers);
+        System.out.println("Sequences:");
         System.out.println(sequences);
-        System.out.println("set");
+        System.out.println("Pierwsza liczba wybrana przez komputer: " + Malwina.selectFirstNumber(sequences));
         List<ArrayList<Integer>> nnbg = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> person = new ArrayList<>();
         person.add(1);
@@ -21,6 +23,6 @@ public class Test2 {
         person2.add(5);
         person2.add(6);
         nnbg.add(person2);
-        System.out.println(nnbg);
+        //System.out.println(nnbg);
     }
 }
