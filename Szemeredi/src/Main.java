@@ -14,6 +14,9 @@ public class Main {
             if (gameIters == 0) len1 = game.computerFirstMove(); else len1 = game.ComputerMove();
             if (len1 >= game.k) {
                 System.out.println("KOMPUTER WYGRAŁ!");
+                Map<Integer, List<Integer>> winning = ProgressionChecker.CheckProgressions(game.ComputerSet);
+                int key = winning.keySet().iterator().next();
+                System.out.println("Wygrywający ciąg: " + winning.get(key));
                 TimeUnit.SECONDS.sleep(5);
                 break;
             }
@@ -28,6 +31,9 @@ public class Main {
             int len2 = game.PlayerMove();
             if (len2 >= game.k) {
                 System.out.println("GRACZ WYGRAŁ!");
+                Map<Integer, List<Integer>> winning = ProgressionChecker.CheckProgressions(game.PlayerSet);
+                int key = winning.keySet().iterator().next();
+                System.out.println("Wygrywający ciąg: " + winning.get(key));
                 TimeUnit.SECONDS.sleep(5);
                 break;
             }
