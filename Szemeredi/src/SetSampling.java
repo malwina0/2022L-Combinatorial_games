@@ -2,12 +2,12 @@ import java.util.*;
 
 public class SetSampling {
 
-    public static List<Integer> ChooseRandomSet(int n) {
-        int bound = n*5;
+    public static List<Integer> ChooseRandomSet(int x) {
+        int bound = x*5;
         List<Integer> numbers = new ArrayList<>();
         Random rand = new Random();
         boolean repeat = false;
-        for (int i = 0; i < n; i++){
+        for (int i = 0; i < x; i++){
             int number = rand.nextInt(bound);
             if (numbers.contains(number)){
                 if (!repeat){
@@ -23,10 +23,10 @@ public class SetSampling {
         return numbers;
     }
 
-    public static List<Integer> GenerateSetWithProgression(int n, int k){
+    public static List<Integer> GenerateSetWithProgression(int x, int k){
         List<Integer> numbers = new ArrayList<>();
         while (true) {
-            List<Integer> test = ChooseRandomSet(n);
+            List<Integer> test = ChooseRandomSet(x);
             int length = SequenceOps.getSequences(test, k).size();
             if (length >= 1) {
                 numbers = test;

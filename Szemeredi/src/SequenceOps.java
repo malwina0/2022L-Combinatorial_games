@@ -9,11 +9,11 @@ public class SequenceOps {
          * przyjmuje listę liczb oraz długość szukanego ciągu arytmetycznego
          * zwraca listę wszytskich ciągów arytmatycznych o długości = k
          */
-        int n = numbers.size();
+        int x = numbers.size();
         Set<ArrayList<Integer>> sequences = new HashSet<>(); //wynikowy set
 
-//        lista gdzie na n-tym miejscu jest liczba ile jest par, między którymi różnica to n
-        List<Integer> howManyAbs = new ArrayList<>(Arrays.asList(new Integer[5*n]));
+//        lista gdzie na x-tym miejscu jest liczba ile jest par, między którymi różnica to x
+        List<Integer> howManyAbs = new ArrayList<>(Arrays.asList(new Integer[5*x]));
         Collections.fill(howManyAbs, 0);
 
         Map<Integer, List<ArrayList<Integer>> > map = new HashMap<>();
@@ -23,8 +23,6 @@ public class SequenceOps {
                 howManyAbs.set(difference, howManyAbs.get(difference)+1);
                 List<ArrayList<Integer>> listWithThisDifference;
                 ArrayList<Integer> par = new ArrayList<>();
-                int xi = numbers.get(i);
-                int xj = numbers.get(j);
                 par.add(numbers.get(i));
                 par.add(numbers.get(j)); //mamy listę z parą którą rozważamy
                 if (map.containsKey(difference)) {
@@ -45,7 +43,7 @@ public class SequenceOps {
         }
         map.keySet().removeAll(set);
 
-        // dla konkretnej różnicy n, sortujemy listę par po pierwszym elemencie
+        // dla konkretnej różnicy x, sortujemy listę par po pierwszym elemencie
         List<ArrayList<Integer>> currentList = null;
         for (Integer key : map.keySet())  {
             currentList = map.get(key);

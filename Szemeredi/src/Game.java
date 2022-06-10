@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Game {
 
-    public int n;
+    public int x;
     public int k;
     public ArrayList<Integer> Set;
     public ArrayList<Integer> ComputerSet;
@@ -26,48 +26,48 @@ public class Game {
         return best.get(key);
     }
 
-    public Game(int order, int n, int k) {
+    public Game(int order, int x, int k) {
         this.k = k;
-        this.n = n;
+        this.x = x;
         Order = order;
         ComputerSet = new ArrayList<>();
         PlayerSet = new ArrayList<>();
-        Set = (ArrayList<Integer>) SetSampling.GenerateSetWithProgression(n, k);
+        Set = (ArrayList<Integer>) SetSampling.GenerateSetWithProgression(x, k);
         sequences = SequenceOps.getSequences(Set,k);
     }
 
     public static Game DataInput(){
         System.out.println("Gra Szemeredi'ego");
         System.out.println("Ze względu na trudność w szukaniu długich ciągów pośród wielu liczb oraz przedłużone działanie programu," +
-                "najlepiej wybrać n z przedziału od 3 do 1000 oraz k od 1 do 10.");
+                "najlepiej wybrać x z przedziału od 3 do 1000 oraz k od 1 do 10.");
         System.out.println("Podaj wielkość wylosowanego zbioru:");
-        int n;
+        int x;
         while(true) {
             String nS = Input.nextLine();
             try {
-                n = Integer.parseInt(nS);
-                if (n > 1000 || n < 3)
+                x = Integer.parseInt(nS);
+                if (x > 1000 || x < 3)
                     throw new NumberFormatException();
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od 3 do 1000.");
             }
         }
-        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego od " + Math.min(2,n/2) + " do " + n/2 +":");
+        System.out.println("Podaj długość poszukiwanego ciągu arytmetycznego od " + Math.min(2,x/2) + " do " + x/2 +":");
         int k;
         while(true) {
             String kS = Input.nextLine();
             try {
                 k = Integer.parseInt(kS);
-                if (k > n/2 || k < 2)
+                if (k > x/2 || k < 2)
                     throw new NumberFormatException();
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od " + Math.min(2,n/2) + " do " + n/2 +":");
+                System.out.println("Podano nieprawidłowy format danych, proszę podać liczbę od " + Math.min(2,x/2) + " do " + x/2 +":");
             }
         }
         int order = new Random().nextInt(2);
-        return new Game(order, n, k);
+        return new Game(order, x, k);
     }
     public int computerFirstMove(){
         System.out.println("Ruch komputera.");
