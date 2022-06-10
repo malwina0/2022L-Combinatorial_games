@@ -92,7 +92,7 @@ public class Game {
         boolean result = false;
         int element = -1;
         List<Integer> series = setsUpdate(copy, ComputerSet);
-        if (ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next() == k - 1) {
+        if (ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next() > ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next()) {
             List<Integer> copy2 = new ArrayList<>();
             List<Integer> series2 = setsUpdate(copy2,PlayerSet);
             series2.removeAll(PlayerSet);
