@@ -57,15 +57,23 @@ public class ProgressionChecker {
         }
     }
 
-    public static Map.Entry<List, ArrayList<Integer>> checkHowMuchToWin(Map<List, ArrayList<Integer>> mapa, int gracz) {
+    public static Map.Entry<List, ArrayList<Integer>> checkHowManyToWin(Map<List, ArrayList<Integer>> mapa, int gracz, int k) {
         /**
+         *
          * metoda zwraca mapę, gdzie kluczem jest ciąg, którego ułożenia gracz/komputer jest najbliżej
          */
         Iterator<Map.Entry<List, ArrayList<Integer> >> iter = mapa.entrySet().iterator();
-        Map.Entry<List, ArrayList<Integer> > toWin = iter.next();
+        Map.Entry<List, ArrayList<Integer>> toWin = null;
         while (iter.hasNext()) {
             Map.Entry<List, ArrayList<Integer>> e = iter.next();
-            if (e.getValue().get(gracz) < toWin.getValue().get(gracz)) {
+            if (e.getValue().get( (gracz+1) % 2 ) == k) {
+                toWin = e;
+                break;
+            }
+        }
+        while (iter.hasNext()) {
+            Map.Entry<List, ArrayList<Integer>> e = iter.next();
+            if (e.getValue().get( (gracz+1) % 2 ) == k && e.getValue().get(gracz) < toWin.getValue().get(gracz)) {
                 toWin = e;
             }
         }
