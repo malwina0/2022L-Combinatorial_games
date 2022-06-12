@@ -90,6 +90,12 @@ public class Main {
                 return;
             }
             gameIters++;
+
+            // SPRAWDZANIE JAKIE OPCJE MAJĄ GRACZE
+            System.out.println("Ciagi komputera");
+            game.ComputerSequences.stream().forEach(System.out::println);
+            System.out.println("Ciągi gracza");
+            game.PlayerSequences.stream().forEach(System.out::println);
         }
     }
 }

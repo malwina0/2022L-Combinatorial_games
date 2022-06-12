@@ -10,15 +10,8 @@ public class Game {
     public int Order;
     public static final Scanner Input = new Scanner( System.in );
     public Set<ArrayList<Integer>> sequences;
-    public Map<List, ArrayList<Integer>> seqWithProgressMap;
-
-    public int blockOpponent(){
-        //System.out.println("BLOCK");
-        List<Integer> copy = new ArrayList<>();
-        List<Integer> seriesPlayer = setsUpdate(copy, PlayerSet);
-        seriesPlayer.removeAll(PlayerSet);
-        return seriesPlayer.get(0);
-    }
+    public Set<MySet> PlayerSequences;
+    public Set<MySet> ComputerSequences;
 
     private List<Integer> setsUpdate(List<Integer> copy, ArrayList<Integer> playerSet) {
         copy.addAll(playerSet);
@@ -28,6 +21,15 @@ public class Game {
         return best.get(key);
     }
 
+    /**
+     WARTO ZACZĄĆ OD TEGO, ŻE TERAZ OBIEKT GRA MA POLA COMPUTERSEQUNENCES I PLAYERSEQUENCED.
+     SĄ TO POLA, W KTÓRYCH PRZECHOWYWANE SĄ OBIEKTY MYSET, KTORE ODPOWIADAJĄ CIĄGOM KTÓRE GRACZ MOŻE JESZCZE UTWORZYĆ.
+     NA STARCIE SĄ INIZJALIZOWANE W KONSTRUKTORZE TAK ŻE KAŻDY GRACZ MÓGŁBY UŁOŻYĆ KAŻDY CIĄG, A POTEM
+     SUKCEWSYWNIE USUWANE.
+
+     W MAINIE NIC SIĘ NIE ZMIENIŁO, LOGIKA JEST DOKŁADNIE TAKA SAMA.
+     */
+
     public Game(int order, int x, int k) {
         this.k = k;
         this.x = x;
@@ -36,10 +38,17 @@ public class Game {
         PlayerSet = new ArrayList<>();
         Set = (ArrayList<Integer>) SetSampling.GenerateSetWithProgression(x, k);
         sequences = SequenceOps.getSequences(Set,k);
-        for (ArrayList<Integer> ciag: sequences) {
-            ArrayList<Integer> progresGraczy = new ArrayList<>(Arrays.asList(new Integer[2]));
-            Collections.fill(progresGraczy, k);
-            seqWithProgressMap.put(ciag, progresGraczy);
+//        for (ArrayList<Integer> ciag: sequences) {
+//            ArrayList<Integer> progresGraczy = new ArrayList<>(Arrays.asList(new Integer[2]));
+//            Collections.fill(progresGraczy, k);
+//            seqWithProgressMap.put(ciag, progresGraczy);
+//        }
+        ComputerSequences = new HashSet<>();
+        PlayerSequences = new HashSet<>();
+        for (ArrayList<Integer> seq : sequences) {
+            MySet n = new MySet(seq);
+            ComputerSequences.add(n);
+            PlayerSequences.add(n);
         }
     }
 
@@ -76,67 +85,153 @@ public class Game {
         int order = new Random().nextInt(2);
         return new Game(order, x, k);
     }
-    public int computerFirstMove(){
-        System.out.println("Ruch komputera.");
-        int element = SequenceOps.selectFirstNumber(sequences);
-        System.out.println(sequences);
-        Set.removeAll(List.of(element));
-        SequenceOps.updateSequences(sequences, element);
-        return finalizeMove(element);
+
+    public void updateProgressions(int player, int number){
+        /**
+         Funckja która odpowiada za aktualizowanie setów graczy.
+         * player: 0 - ruch komputera, 1 - ruch gracza.
+         Gdy gracz wybiera liczbę, we wszystkich MySetach należących do niego, tam gdzie jest element number,
+         korzysta z funcji MySet.appendColored. A dodatkowo wyrzuca ze zbioru MySetów przeciwnika wszystkie
+         MySety które odpowiadają ciągom zawierającym number - bo gracz przeciwny na pewno już ich nie ułoży.
+         Dodatkowo tu updateuje się Set, ComputerSet i PlayerSet.
+         */
+        if (player == 0) {
+            ComputerSet.add(number);
+            PlayerSequences.removeIf(e -> e.sequence.contains(number));
+            for (MySet e : ComputerSequences){
+                if (e.sequence.contains(number))
+                    e.appendColored(number);
+            }
+        } else {
+            PlayerSet.add(number);
+            ComputerSequences.removeIf(e -> e.sequence.contains(number));
+            for (MySet e : PlayerSequences){
+                if (e.sequence.contains(number))
+                    e.appendColored(number);
+            }
+        }
+        Set.removeAll(List.of(number));
     }
 
-    private int finalizeMove(int element) {
-        ComputerSet.add(element);
+    public MySet getColoredMaxSeq(Set<MySet> seqs){
+        /**
+         * Funckja przyjmuje Set MySetów - komputera lub gracza, i zwraca obiekt MySet, który
+         * odpowiada ciągowi, w któym gracz ma najwięcej pokolorowanych liczb.
+         * Gdy jest więcej takich MySetów - wybiera pierwszy który trafi się podczas iterowania.
+         */
+        int maxcolored = 0;
+        MySet max = null;
+        for(MySet e: seqs){
+            if (e.Colored > maxcolored){
+                maxcolored = e.Colored;
+                max = e;
+            }
+        }
+        return max;
+    }
+
+    public int block(){
+        /**
+         Funckja odpowiadająca za blokowania gracza.
+         Blokowanie jest wykonywane wtedy, gdy:
+         - człowiek ma dłuższy ciąg (pozyskany funckją getColoredMaxSeq)
+         - komputer nie ma już ciągów do ułożenia.
+         W pozostałych przypadkach komputer nie blokuje przeciwnika.
+         Funckja przeszukuje MySety człowieka, znajduje ten który jest najwięcej pokolorwany
+         i z niego wybiera losową liczbę, która jeszcze nie jest pokolorowana
+         Funckja zwraca:
+         - -1 gdy komputer nie blokuje
+         - liczbę którą koloruje komputer, gdy blokuje.
+         */
+        MySet maxComp = getColoredMaxSeq(ComputerSequences);
+        MySet maxPlayer = getColoredMaxSeq(PlayerSequences);
+        if (maxPlayer == null){
+            return -1;
+        }
+        if (maxComp == null || maxComp.Colored < maxPlayer.Colored){
+            ArrayList<Integer> numbersToColor = new ArrayList<>(maxPlayer.sequence);
+            numbersToColor.removeAll(maxPlayer.coloredNumbers);
+            int index = new Random().nextInt(numbersToColor.size());
+            int number = numbersToColor.get(index);
+            updateProgressions(0, number);
+            return number;
+        }
+        return -1;
+    }
+
+    public boolean checkRemis(){
+        /**
+         * funckja sprawdza czy jest remis
+         * Jest ro w tym przpadku równoważne z tym, że ani komputer ani człowiek
+         * nie mają już ciągów do ułożenia
+         * Zwraca true gdy remis i false gdy nieremis.
+         */
+        if (PlayerSequences.isEmpty() && ComputerSequences.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    public int computerFirstMove(){
+        /**
+         * pierwszy ruch komputera, analogicznie do tego wcześniej
+         * komputer wybiera najczęściej występującą liczbę.
+         * W pierwszym ruchu komputer jeszcze nie blokuje!!!
+         * Funckja zwraca długość najwięcej pokolorowaneoo ciagu
+         * lub -1, gdy komputer już nie ma ciągów do ułożenia.
+         */
+        System.out.println("Ruch komputera.");
+        int element = SequenceOps.selectFirstNumber(sequences);
+        updateProgressions(0, element);
         System.out.println("Komputer wybrał element " + element);
         System.out.println("Zbiór komputera:");
         System.out.println(ComputerSet);
-        //System.out.println(length);
-        return ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next();
+        MySet Best = getColoredMaxSeq(ComputerSequences);
+        if (Best == null){
+            return -1;
+        }
+        return Best.Colored;
     }
 
     public int ComputerMove(){
-        System.out.println("Ruch komputera.");
-        List<Integer> copy = new ArrayList<>();
-        boolean result = false;
-        int element = -1;
-        List<Integer> series = setsUpdate(copy, ComputerSet);
-        if (ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next() == k-1) {
-            List<Integer> copy2 = new ArrayList<>();
-            List<Integer> series2 = setsUpdate(copy2,PlayerSet);
-            series2.removeAll(PlayerSet);
-            List<Integer> seriesCopy = new ArrayList<>(series);
-            seriesCopy.removeAll(ComputerSet);
-            if(series2.size() == 1 && seriesCopy.size() > 1) {
-                element = blockOpponent();
-                Set.removeAll(List.of(element));
-                result = true;
-            } else if (seriesCopy.size() == 1){
-                element = seriesCopy.get(0);
-                Set.removeAll(List.of(element));
-                result = true;
-            }
-        } if(!result) {
-
-            //System.out.println(series.toString());
-            if (series.isEmpty())
-                return 0;
-            int index;
-            while (true) {
-                index = new Random().nextInt(series.size());
-                if (Set.contains(series.get(index))) {
-                    element = series.get(index);
-                    Set.removeAll(List.of(element));
-                    break;
-                }
-            }
+        /**
+         * Funckja odpowiedzialna za kolejne ruchy komputera.
+         * Najpier wykonywana jest funckja block().
+         * Jeśli block zwróciło -1, to wykonujemy normalne kolorwanie.
+         * Polega ono na ponownym znaleznienie najbardziej pokolorwanego ciągu
+         * i wybraniu losowej liczby która nie jest jeszcze pokolorowana.
+         * Jeśli block zwróci liczbę inną niż -1 to oznacza, że to updateProgressions()
+         * jest przekazywana właśnie ta liczba.
+         * Funckja zwraca długość najwięcej pokolorowaneoo ciagu
+         * lub -1, gdy komputer już nie ma ciągów do ułożenia.
+         */
+        int number = block();
+        if(number == -1){
+            MySet maxComp = getColoredMaxSeq(ComputerSequences);
+            ArrayList<Integer> numbersToColor = new ArrayList<>(maxComp.sequence);
+            numbersToColor.removeAll(maxComp.coloredNumbers);
+            int index = new Random().nextInt(numbersToColor.size());
+            number = numbersToColor.get(index);
+            updateProgressions(0, number);
         }
-        return finalizeMove(element);
-
+        System.out.println("Komputer wybrał element " + number);
+        System.out.println("Zbiór komputera:");
+        System.out.println(ComputerSet);
+        MySet best = getColoredMaxSeq(ComputerSequences);
+        if (best == null){
+            return -1;
+        }
+        return best.Colored;
     }
 
     public int PlayerMove(){
+        /**
+         * Funckja odpowedzialna za ruch gracza,
+         * jest identyczna jak do tej pory, poza tym że używa updateProgressions() ;)
+         * Funckja zwraca długość najwięcej pokolorowaneoo ciagu
+         * lub -1, gdy człowiek już nie ma ciągów do ułożenia.
+         */
         System.out.println("Ruch gracza.");
-        System.out.println(sequences);
         System.out.println("Twój zbiór:");
         System.out.println(PlayerSet);
         System.out.println("Wybierz liczbę ze zbioru, którą chcesz pokolorować swoim kolorem");
@@ -146,8 +241,7 @@ public class Game {
             try {
                 element = Integer.parseInt(kS);
                 if (Set.contains(element)){
-                    PlayerSet.add(element);
-                    Set.removeAll(List.of(element));
+                    updateProgressions(1, element);
                     break;
                 } else {
                     throw new NumberFormatException();
@@ -158,21 +252,13 @@ public class Game {
         }
         System.out.println("Zbiór gracza:");
         System.out.println(PlayerSet);
-        return ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next();
+        MySet best = getColoredMaxSeq(PlayerSequences);
+        if (best == null){
+            return -1;
+        }
+        return best.Colored;
     }
 
-    public boolean checkRemis(){
-        List<Integer> SetC = new ArrayList<>();
-        SetC.addAll(ComputerSet);
-        SetC.addAll(Set);
-        List<Integer> SetP = new ArrayList<>();
-        SetP.addAll(PlayerSet);
-        SetP.addAll(Set);
-        //System.out.println(SetC);
-        int lenC = ProgressionChecker.CheckProgressions(SetC).keySet().iterator().next();
-        int lenP = ProgressionChecker.CheckProgressions(SetP).keySet().iterator().next();
-        return lenC < k && lenP < k;
-    }
 
 
 }
