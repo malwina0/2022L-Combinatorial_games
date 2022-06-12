@@ -6,6 +6,7 @@ public class SetSampling {
         int bound = x*5;
         List<Integer> numbers = new ArrayList<>();
         Random rand = new Random();
+        //rand.setSeed(23);
         boolean repeat = false;
         for (int i = 0; i < x; i++){
             int number = rand.nextInt(bound);

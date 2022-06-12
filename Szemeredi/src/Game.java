@@ -10,6 +10,8 @@ public class Game {
     public int Order;
     public static final Scanner Input = new Scanner( System.in );
     public Set<ArrayList<Integer>> sequences;
+    public Map<List, ArrayList<Integer>> seqWithProgressMap;
+
     public int blockOpponent(){
         //System.out.println("BLOCK");
         List<Integer> copy = new ArrayList<>();
@@ -34,6 +36,11 @@ public class Game {
         PlayerSet = new ArrayList<>();
         Set = (ArrayList<Integer>) SetSampling.GenerateSetWithProgression(x, k);
         sequences = SequenceOps.getSequences(Set,k);
+        for (ArrayList<Integer> ciag: sequences) {
+            ArrayList<Integer> progresGraczy = new ArrayList<>(Arrays.asList(new Integer[2]));
+            Collections.fill(progresGraczy, k);
+            seqWithProgressMap.put(ciag, progresGraczy);
+        }
     }
 
     public static Game DataInput(){
@@ -72,6 +79,7 @@ public class Game {
     public int computerFirstMove(){
         System.out.println("Ruch komputera.");
         int element = SequenceOps.selectFirstNumber(sequences);
+        System.out.println(sequences);
         Set.removeAll(List.of(element));
         SequenceOps.updateSequences(sequences, element);
         return finalizeMove(element);
@@ -92,7 +100,7 @@ public class Game {
         boolean result = false;
         int element = -1;
         List<Integer> series = setsUpdate(copy, ComputerSet);
-        if (ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next() > ProgressionChecker.CheckProgressions(ComputerSet).keySet().iterator().next()) {
+        if (ProgressionChecker.CheckProgressions(PlayerSet).keySet().iterator().next() == k-1) {
             List<Integer> copy2 = new ArrayList<>();
             List<Integer> series2 = setsUpdate(copy2,PlayerSet);
             series2.removeAll(PlayerSet);
@@ -128,6 +136,7 @@ public class Game {
 
     public int PlayerMove(){
         System.out.println("Ruch gracza.");
+        System.out.println(sequences);
         System.out.println("Twój zbiór:");
         System.out.println(PlayerSet);
         System.out.println("Wybierz liczbę ze zbioru, którą chcesz pokolorować swoim kolorem");
