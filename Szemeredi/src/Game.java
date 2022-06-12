@@ -13,14 +13,6 @@ public class Game {
     public Set<MySet> PlayerSequences;
     public Set<MySet> ComputerSequences;
 
-    private List<Integer> setsUpdate(List<Integer> copy, ArrayList<Integer> playerSet) {
-        copy.addAll(playerSet);
-        copy.addAll(Set);
-        Map<Integer, List<Integer>> best = ProgressionChecker.CheckProgressions(copy);
-        int key = best.keySet().iterator().next();
-        return best.get(key);
-    }
-
     /**
      WARTO ZACZĄĆ OD TEGO, ŻE TERAZ OBIEKT GRA MA POLA COMPUTERSEQUNENCES I PLAYERSEQUENCED.
      SĄ TO POLA, W KTÓRYCH PRZECHOWYWANE SĄ OBIEKTY MYSET, KTORE ODPOWIADAJĄ CIĄGOM KTÓRE GRACZ MOŻE JESZCZE UTWORZYĆ.
@@ -38,11 +30,6 @@ public class Game {
         PlayerSet = new ArrayList<>();
         Set = (ArrayList<Integer>) SetSampling.GenerateSetWithProgression(x, k);
         sequences = SequenceOps.getSequences(Set,k);
-//        for (ArrayList<Integer> ciag: sequences) {
-//            ArrayList<Integer> progresGraczy = new ArrayList<>(Arrays.asList(new Integer[2]));
-//            Collections.fill(progresGraczy, k);
-//            seqWithProgressMap.put(ciag, progresGraczy);
-//        }
         ComputerSequences = new HashSet<>();
         PlayerSequences = new HashSet<>();
         for (ArrayList<Integer> seq : sequences) {
@@ -122,7 +109,7 @@ public class Game {
         int maxcolored = 0;
         MySet max = null;
         for(MySet e: seqs){
-            if (e.Colored > maxcolored){
+            if (e.Colored >= maxcolored){
                 maxcolored = e.Colored;
                 max = e;
             }

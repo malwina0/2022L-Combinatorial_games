@@ -23,32 +23,32 @@ public class Test2 {
         }
         System.out.println("Mapa: " + mapa);
 
-        ProgressionChecker.updateProgress(mapa, 116, 0, k);
+        //ProgressionChecker.updateProgress(mapa, 116, 0, k);
         System.out.println("-------------jnhbgvfrtdfyguh---------");
         System.out.println("Mapa: " + mapa);
 
-        ProgressionChecker.updateProgress(mapa, 122, 1, k);
+        //ProgressionChecker.updateProgress(mapa, 122, 1, k);
         System.out.println("-------------jnhbgvfrtdfyguh---------");
         System.out.println("Mapa: " + mapa);
 
-        ProgressionChecker.updateProgress(mapa, 113, 0, k);
+        //ProgressionChecker.updateProgress(mapa, 113, 0, k);
         System.out.println("-------------jnhbgvfrtdfyguh---------");
         System.out.println("Mapa: " + mapa);
 
-        ProgressionChecker.updateProgress(mapa, 111, 0, k);
+        //ProgressionChecker.updateProgress(mapa, 111, 0, k);
         System.out.println("-------------jnhbgvfrtdfyguh---------");
         System.out.println("Mapa: " + mapa);
 
         System.out.println("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-        Map.Entry<List, ArrayList<Integer>> komputerToWin = ProgressionChecker.checkHowManyToWin(mapa, 1, k);
-        System.out.println("Komputer toWin " + komputerToWin);
+        //Map.Entry<List, ArrayList<Integer>> komputerToWin = ProgressionChecker.checkHowManyToWin(mapa, 1, k);
+        //System.out.println("Komputer toWin " + komputerToWin);
 
         System.out.println("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-        Map.Entry<List, ArrayList<Integer>> graczToWin = ProgressionChecker.checkHowManyToWin(mapa, 0, k);
-        System.out.println("Gracz toWin " + graczToWin);
+        //Map.Entry<List, ArrayList<Integer>> graczToWin = ProgressionChecker.checkHowManyToWin(mapa, 0, k);
+        //System.out.println("Gracz toWin " + graczToWin);
 
         System.out.println("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-        System.out.println(ProgressionChecker.checkWhoCloserToWin(graczToWin, komputerToWin));
+        //System.out.println(ProgressionChecker.checkWhoCloserToWin(graczToWin, komputerToWin));
 
 //        System.out.println("Pierwsza liczba wybrana przez komputer: " + SequenceOps.selectFirstNumber(sequences));
 //        List<ArrayList<Integer>> nnbg = new ArrayList<ArrayList<Integer>>();
