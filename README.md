@@ -1,6 +1,6 @@
 # Combinatorial games
 
-Project carried out in the subject of combinatorial games with [alexmal01](https://github.com/alexmal01) and [@jakub-piw](https://github.com/jakub-piw).
+Project carried out in the subject of combinatorial games with [@alexmal01](https://github.com/alexmal01) and [@jakub-piw](https://github.com/jakub-piw).
 
 **Szemeredi's game**
 
